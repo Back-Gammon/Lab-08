@@ -1,0 +1,142 @@
+///1. 
+#include <stdio.h>
+
+void letter_grade(int points, char* letter, int* just_missed);
+int getform();
+int validation(int selection);
+void SlopeInt();
+void PointSlopefunc(float, float, float);
+void TwoPoint();
+void PointSlope();
+void AreYouDone();
+void AreYouDone2(int answer);
+
+
+void main(){
+    int selection;
+    
+    selection = getform();
+    selection = validation(selection);
+    
+    if (selection == 1){
+        TwoPoint();
+    }
+    else if (selection == 2){
+        PointSlope();
+    }
+    else{
+        SlopeInt();
+    }
+    AreYouDone();
+}
+
+void letter_grade(int points, char* letter, int* just_missed){
+    if (points >= 90 && points <= 100){
+        *letter = 'A';}
+    else if (points >= 80 && points <= 89){
+        *letter = 'B';}
+    else if (points >= 70 && points <= 79){
+        *letter = 'C';}
+    else if (points >= 60 && points <= 69){
+        *letter = 'D';}
+    else{
+        *letter = 'F';} 
+    
+    if (points == 59 || points == 69 || points == 79 || points == 89){
+        *just_missed = 1;}
+    else{
+        *just_missed = 0;}
+}
+
+///2.
+/* It makes sense to use a simple int function with a return statemtent instead
+of a void function with pointers because there is only one varible value that is
+being returned. Pointers are useful only if there are multiple values that are
+returned because they are able to point to multiple addresses of memory that the 
+main function can later use and reassign to it's variables, but since this 
+function is only computing one int value, then the return function is adequate. 
+Employing pointers involves much more work and complications that are actually 
+necessary. */
+
+///3.
+/*The functions silly and happy cannot call grumpy since they call grumpy as a
+variable. It can be called though within grumpy and main.*/
+
+int getform(){
+    int formselect;
+    
+    printf("Hello. This is the Slope-Intercept Form Converter.\n\nThere are THREE possible starting forms:\n\n  1. Two-Point Form:\n       two (x,y) points are given\n  2. Point-Slope Form:\n       an (x,y) point and a slope are given\n  3. Slope-Intercept Form:\n       a slope and a y-intercept are given\n\n");
+    printf("Select the starting form of your linear equation\nusing the starting form's correalated digit:\n");
+    scanf("%d", &formselect);
+    
+    return formselect;
+}
+
+int validation(int selection){
+    if (selection > 3 || selection < 1){
+        printf("Digit is unrecognized.\nPlease try inputing again.\n");
+        scanf("%d", &selection);
+        validation(selection);
+    } else{
+        return selection;
+    }
+}
+
+void SlopeInt(){
+    char formula[20];
+    printf("Enter formula (include no spaces):\n");
+    scanf("%19s", formula);
+    printf("The Slope-Intercept Form is %s.\n", formula);
+}
+
+void TwoPoint(){
+    float slope, firstx, firsty, secondx, secondy;
+    printf("Enter the two points in the form of 'x y x y'\nwhere the first 'x y' are the coordinates for the\nfirst point and so on.\n");
+    scanf("%f %f %f %f", &firstx, &firsty, &secondx, &secondy);
+    if(firstx == secondx){
+        printf("Invalid coordinates, please input again.\n");
+        scanf("%f %f %f %f", &firstx, &firsty, &secondx, &secondy);
+    }
+    slope = (secondy - firsty)/(secondx - firstx);
+    PointSlopefunc(firstx, firsty, slope);
+    
+    
+}
+
+void PointSlopefunc(float firstx, float firsty, float slope){
+    float yint;
+    yint = (slope*(firstx*-1)+firsty);
+    if(yint > 0){
+        printf("The Slope-Intercept Form is y=%.0fx+%.0f.\n", slope, yint);
+    } else if(yint < 0){
+        printf("The Slope-Intercept Form is y=%.0fx%.0f.\n", slope, yint);
+    } else if(yint == 0){
+        printf("The Slope-Intercept Form is y=%.0fx.\n", slope);
+    }
+}
+
+void PointSlope(){
+    float slope, firstx, firsty;
+    printf("Enter the two points and the slope in the form of 'x y slope'\n");
+    scanf("%f %f %f", &firstx, &firsty, &slope);
+    PointSlopefunc(firstx, firsty, slope);
+}
+
+void AreYouDone(){
+    int answer, done; 
+    printf("Do you have another equation? (type 1 for yes, 2 for no)\n");
+    scanf("%d", &answer);
+    AreYouDone2(answer);
+}
+
+void AreYouDone2(int answer){
+    if(answer == 1){
+        main();
+    } else if(answer == 2){
+        printf("Have a nice day!!");
+    } else{
+        printf("...that's invalid bro... try that one again...\n");
+        scanf("%d", &answer);
+        AreYouDone2(answer);
+    }
+}
